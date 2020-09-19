@@ -1,4 +1,5 @@
 import func as f
-n = f.convert32(input())
 
-print(n)
+c = ''
+c = f.LongAdd(input(), input(), c)
+print(c)

@@ -1,4 +1,4 @@
-Alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+Alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUV"
 def convert32(num):
    if isinstance(num, str):
       n = int(num, 16)

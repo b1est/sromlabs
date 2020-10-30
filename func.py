@@ -11,6 +11,13 @@ def conv(num, to = 32, froM = 16):
 
 def LongAdd(a, b,  c = '' , w = 32,  carry = 0):
    n = len(a)
+   m = len(b)
+   if n > m:
+      i = n - m
+      b = lshift(b, i)
+   if n < m:
+      i = m - n
+      a = lshift(a, i)
    for i in range(n - 1, -1, -1):
       if isinstance(a[i], str):
          n_A = int(a[i], w)
@@ -46,7 +53,13 @@ def LongAddDv(a, b,  c = '' ,  carry = 0):
 
 def LongSub(a, b, c = '', w = 32, borrow = 0):
    n = len(a)
-
+   m = len(b)
+   if n > m:
+      i = n - m
+      b = lshift(b, i)
+   if n < m:
+      i = m - n
+      a = lshift(a, i)
    for i in range(n-1, -1,-1):
       if isinstance(a[i], str):
          n_A = int(a[i], w)
@@ -111,6 +124,10 @@ def LongMulOneDigitDv (a, b, c = ''):
    else:
       c = Alphabet[carry] + c
       return c
+def lshift(tmp, k):
+   for i in range(k):
+      tmp = '0' + tmp
+   return tmp
 def LongMulDv(a, b, c = ''):
    n = len(a)
    for i in range(n-1, -1,-1):
@@ -128,6 +145,13 @@ def LongMulDv(a, b, c = ''):
    return c
 def LongMul(a, b, c = '', w = 32):
    n = len(a)
+   m = len(b)
+   if n > m:
+      i = n - m
+      b = lshift(b, i)
+   if n < m:
+      i = m - n
+      a = lshift(a, i)
    for i in range(n-1, -1,-1):
       tmp = LongMulOneDigit(a, b[i], '', w)     
       k = abs(i - n + 1)
@@ -170,19 +194,34 @@ def LongShiftBitsToHigh(b, n):
 
 def LongDivMod (a, b):
    res = []
-   k = len(b)
+   k1 = a[len(b)-1]
+   if isinstance(k1, str):
+      k1 = int(k1, 32)
+   else:
+      k1 = int(k1)
+   k = (len(b)-1 * 32) + k1.bit_length()
    r = a
    q = 0
-   while r >= b: 
-      t = len(r)
+   r2 = conv(r, 10, 32)
+   b2 = conv(b, 10, 32)
+   while r2 >= b2: 
+      r1 = r[len(r)-1]
+      if isinstance(r1, str):
+         r1 = int(r1, 32)
+      else:
+         r1 = int(r1)
+      t = (len(r)-1 * 32) + r1.bit_length()
       c = LongShiftBitsToHigh(b, t - k)
+      b2 = conv(b, 10, 32)
       if r < c: 
          t = t - 1
          c = LongShiftBitsToHigh(b, t - k)
+         b2 = conv(b, 10, 32)
 
       r = LongSub(r, c, '', 32)
+      r2 = conv(r, 10, 32)
       q = q + 2**(t - k)
-   q = conv(q, 32, 10)
+   q = conv(q, 32, 16)
    r = conv(r, 32, 16)
    res.append(q)
    res.append(r)

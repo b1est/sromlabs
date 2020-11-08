@@ -32,25 +32,6 @@ def LongAdd(a, b,  c = '' , w = 32,  carry = 0):
       carry = temp // 32    
    return Alphabet[carry] + c
 
-def LongAddDv(a, b,  c = '' ,  carry = 0):
-   n = len(a)
-   for i in range(n - 1, -1, -1):
-      if isinstance(a[i], str):
-         n_A = int(a[i], 2)
-      else:
-         n_A = int(a[i])
-      if isinstance(b[i], str):
-         n_B = int(b[i], 2)
-      else:
-         n_B = int(b[i])
-      temp = n_A + n_B + carry
-      c =  Alphabet[temp % 2] + c
-      carry = temp // 2    
-   return Alphabet[carry] + c
-
-
-
-
 def LongSub(a, b, c = '', w = 32, borrow = 0):
    n = len(a)
    m = len(b)
@@ -104,45 +85,11 @@ def shift(temp, i):
       temp = temp + '0'
    return temp
 
-def LongMulOneDigitDv (a, b, c = ''):
-   carry = 0
-   n = len(a)
-   if isinstance(b, str):
-      n_b = int(b, 2)
-   else:
-      n_b = int(b)
-   for i in range(n-1, -1,-1):
-      if isinstance(a[i], str):
-         n_A = int(a[i], 2)
-      else:
-         n_A = int(a[i])
-      temp = n_A * n_b + carry
-      c =  Alphabet[temp % 2] + c
-      carry = temp // 2
-   if carry == 0:
-      return c
-   else:
-      c = Alphabet[carry] + c
-      return c
 def lshift(tmp, k):
    for i in range(k):
       tmp = '0' + tmp
    return tmp
-def LongMulDv(a, b, c = ''):
-   n = len(a)
-   for i in range(n-1, -1,-1):
-      tmp = LongMulOneDigitDv(a, b[i], '')     
-      k = abs(i - n + 1)
-      tmp = shift(tmp, k)
-      if i == n - 1:
-         c = tmp 
-      else:
-         if len(c) < len(tmp):
-            c = '0' + c
 
-         c = LongAddDv( c, tmp, '')
-         
-   return c
 def LongMul(a, b, c = '', w = 32):
    n = len(a)
    m = len(b)

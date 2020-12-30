@@ -5,4 +5,7 @@ from lab4 import *
 
 
 if __name__ == "__main__":
-   Lab1Main()
+   #Lab1Main()
+   Lab2Main()
+   #Lab3Main()
+   #Lab4Main()

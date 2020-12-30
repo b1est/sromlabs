@@ -1,6 +1,7 @@
 from func import lcmp, sdth, ins, BinConv, rBinConv, conv, stb, bts
 import time
-
+import colorama
+from colorama import Fore, Style
 
 class Num:
     def __init__(self):
@@ -143,8 +144,7 @@ class Num:
     def inv(self, a):
         tmp = Num()
         a = stb(a)
-        n = str(bin((2 ** self.m) - 2))
-        n = n[2::]
+        n = conv(str((2 ** self.m) - 2), 2, 10)
         tmp = tmp.poW(a, n)
         return tmp
 
@@ -169,19 +169,19 @@ def Add(a, b):
     s = time.time() 
     res = bts(num.addBig(stb(a), stb(b)))
     
-    print(res + "\nTime: " + str(time.time() - s) + " seconds")
+    print(res + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
 
 def Mul(a, b):
     num = Num()
     s = time.time()
     res = num.mulPoly(a, b)
-    print(res + "\nTime: " + str(time.time() - s) + " seconds")
+    print(res + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
 
 def Trace(a):
     num = Num()
     s = time.time()
     res = num.Tr(a)
-    print(res + "\nTime: " + str(time.time() - s) + " seconds")
+    print(res + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
 
 def Sqr(a):
     num = Num()
@@ -189,19 +189,19 @@ def Sqr(a):
     a = stb(a)
     p = stb(num.polynom)
     res = num.sqr(a)
-    print(bts(res) + "\nTime: " + str(time.time() - s) + " seconds")
+    print(bts(res) + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
 
 def Power(a, n):
     num = Num()
     s = time.time()
     r = num.poW(a, n)
-    print(bts(r) + "\nTime: " + str(time.time() - s) + " seconds")
+    print(bts(r) + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
 
 def Inv(a):
     num = Num()
     s = time.time()
     r = num.inv(a)
-    print(bts(r) + "\nTime: " + str(time.time() - s) + " seconds")
+    print(bts(r) + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL)
 
 def t1(a, b, c): 
     
@@ -220,15 +220,16 @@ def t2(a):
     
     num = Num()
     n = 2 ** num.m - 1
-    n = str(bin(n))
-    n = bts(n[2:])
+    n = conv(str(n), 2, 10)
     d = num.poW(a, n)
     if bts(d) == '1':
         print("ok.")
     else:
         print("no.")
 
-def main():
+def Lab3Main():
+    colorama.init()
+    print(Fore.GREEN + 'Lab 3: ' + Style.RESET_ALL)
     num = Num()
     a = "10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000100000000000000000000000000000000000000011001001"
     b = "10000000000000000000010000100000000100000000001000000000100000000010001000000000100000000000000000000000000000000000000000000000000000000000000000000000000011001001"
@@ -240,4 +241,4 @@ def main():
 
     
 if __name__ == "__main__":
-    main()
+    Lab3Main()

@@ -2,6 +2,7 @@ import func as f
 import sys
 import colorama
 from colorama import Fore, Style
+import time
 sys.setrecursionlimit(20000)
 
 def Lab1Main():
@@ -15,13 +16,15 @@ def Lab1Main():
     print('B = ' + B)
     print('C = ' + C)
     print('------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
-    print('A + B = ' + f.rlshift(f.conv((f.LongAdd(f.conv(A), f.conv(B))), 16 , 32)))
-    print('A - B = ' + f.rlshift(f.conv((f.LongSub(f.conv(A), f.conv(B))), 16 , 32)))
-    print('A * B = ' + f.rlshift(f.conv((f.LongMul(f.conv(A), f.conv(B))), 16 , 32)))
-    print('A / B = ' + f.diV(A, B)[0] + ' ( R = ' + f.diV(A, B)[1] + ')')
+    s = time.time()
+    print('A + B = ' + f.rlshift(f.conv((f.LongAdd(f.conv(A), f.conv(B))), 16 , 32)) + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
+    print('A - B = ' + f.rlshift(f.conv((f.LongSub(f.conv(A), f.conv(B))), 16 , 32)) + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
+    print('A * B = ' + f.rlshift(f.conv((f.LongMul(f.conv(A), f.conv(B))), 16 , 32)) + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
+    print('A / B = ' + f.diV(A, B)[0] + ' ( R = ' + f.diV(A, B)[1] + ')' + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
+    f.poW(A, B)
     f.tests(A, B, C)
     B = '2'
-    f.poW(A, B)
+    
 
 if __name__ == "__main__":
    Lab1Main()

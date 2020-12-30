@@ -1,7 +1,11 @@
 from func import lcmp, sdth, ins, conv, BinConv, power2
-from lab3 import bts, stb, Num# add, addBig
+from lab3 import bts, stb, Num
+import colorama
+from colorama import Fore, Style
+import time
 
 def multMatrix(a, M = []): 
+    
     for i in range(0, len(a)):
         M.append([])
         for j in range(0, len(a)):
@@ -13,123 +17,80 @@ def multMatrix(a, M = []):
 
 def sqrONB(a):
     a = stb(a)
-    a.insert(0, a[-1])
-    del a[- 1]
-    return a
-
-def mulONB(a, b, m): 
-    d = []
-    
-    for k in range(0, len(a)):
-        c = []
-        for j in range(0, len(a)):
-            tmp = 0
-            for i in range(0, len(a)):
-                tmp = a[i] * m[i][j] + tmp 
-            c.append(tmp % 2)
-        add = 0
-        for i in range(len(c)):
-            add = add + c[i] * b[i]
-        d.append(add % 2)
-        del add
-        a.append(a[0])
-        del a[0]
-        b.append(b[0])
-        del b[0]
-    return d
-
-def power(a):
     tmp = []
     tmp.append(a[-1])
     for j in range(len(a) - 1):
         tmp.append(a[j])
-    a = tmp
-    tmp.clear()
-    return a
-def powerN(n):
     
-    powers = []
-    left = []
-    
-    while n != 0:
-        
-        i = hpowerN(n)[0]
-        left = hpowerN(n)[1]
-        n -= 2**i
-        
-        powers.append(i)
-        if n == 2:
-            powers.append(2)
-            return powers
-    if powers[-1] == 0:
-        del powers[-1]
-    return powers 
- 
-def hpowerN(n, left = []):
-    i = 1
-    while 2**i < n and 2**i != n:
-        i += 1 
-    if 2**i > n:
-        i -= 1
-        if 2**i < n:
-            n -= 2**i
-            left.append(n)
-            return i, left
-        return i, left
-    elif 2**i == n:
-        return i, left
-    else:
-        print("smth wrong")
-
-def f(n):
-    tmp = []
-    for i in range(1, len(n)):
-        if i == 1:
-            t = []
-            t.append(n[0])
-            t.append(n[1])
-            tmp.append(t)
-            del t
-            
-        else:
-            tmp.append(n[i])
     return tmp
-def hf(n):
-    while len(n) != 1:
-        n = f(n)
-    return n
-def power20(a, n, m = 173):
-    if 2**m - 1 < len(n):
-        print('power: ERROR')
-        return -1
-    n = int(conv(n, 10, 2))
-    powers = powerN(n)
-    for i in powers:
-        for j in range(i):
-            tmp = power(stb(a))
-        i = tmp
-    powers = hf(powers)
+
+def rsqrONB(a): 
+    tmp = []
+    for i in range(1, len(a)):
+        tmp.append(a[i])
+    tmp.append(a[0])
+    return tmp
+
+def mulONB(a, b, m): 
+    d = []
+    
+    for k in range(len(a)):
+        c = []
+        for j in range(len(a)):
+            tmp = 0
+            for i in range(len(a)):
+                tmp = tmp + a[i] * m[i][j]  
+            c.append(tmp % 2)
+        add = 0
+        for n in range(len(c)):
+            add = add + c[n] * b[n]
+        d.append(add % 2)
+        a = rsqrONB(a)
+        b = rsqrONB(b)
+        
+    return d
+
+    
+
+
+def power(a, n):
+    tmp = []
+    n.reverse()
+    for i in range(0, len(a)):
+        tmp.append(1)
+    
+    for i in range(0, len(n)):
+        if n[i] == 1:
+            matr = multMatrix(tmp)
+            tmp = mulONB(tmp, a, matr)
+        a = stb(sqrONB(bts(a)))
+    return tmp
     
 
     
 def invONB(a): 
+    print('a = ', a)
     a = stb(a)
-    tmp = a
-    n = BinConv(conv(str(len(a) - 1), 16, 10))
+    n = stb(conv(str(len(a) - 1), 2, 10))
     k = 1
+    print('k = ', k)
+    b = a
     for i in range(1, len(n)):
-        num = stb(sqrONB(tmp))
-        num = power(tmp, 2**k)
-        matr = multMatrix(num)
-        tmp = mulONB(num, tmp, matr)
+        print(Fore.RED + 'i = ' + str(i) + Style.RESET_ALL)
+        d = power(b, stb(conv(str(2**k), 2, 10)))
+        print('b^2 = ' + bts(d))
+        b = mulONB(d, b, multMatrix(d))
+        print('b = b^2 * b = ' + bts(b))
         k = 2*k
+        print('k = ', k)
         if n[i] == 1:
-            tmp = stb(sqrONB(tmp))
-            TMPmtr = multMatrix(tmp)
-            tmp = mulONB(tmp, a, TMPmtr)
+            b = stb(sqrONB(bts(b)))
+            print('b^2 = ' + bts(b))
+            b = mulONB(b, a, multMatrix(b))
+            print('b = b^2 * a = ' + bts(b))
             k = k + 1
-    tmp = stb(sqrONB((tmp)))
-    return tmp
+            print('k = ', k)
+    return bts(stb(sqrONB(bts(b))))
 
 
 def tr(a = [], trc= [0]):
@@ -141,43 +102,59 @@ def tr(a = [], trc= [0]):
 
 def Add():
     tmp = Num()
-    a = "100000000000000000100000000000000000000000000000000000000000000000000000000010000000000000000001000000000000000000000000000000000001000000000000000000000000000000000000000001"
-    b = "100000000000000000100000000000000000000000100000000000000100000000000000000010000000000000000001000000001000000000000000000100000001000000000000000000010000000000000000000001"
-    if tmp.addPol(stb(a), stb(b)) == '' or tmp.addPol(stb(a), stb(b)) is None:
-        print(0)
-    print(tmp.addPol(stb(a), stb(b)))
+    a = "11111001111011000001001110100010011100000111011111110000110001101011110100100011011100110100011000010011011100111100101110011101110011110001001110101101110000100000011111010"
+    b = "10011001100100010001111111110001001001000010001010100000101001111100010000110110010101000010011010110100100000110100001110011110111010101111110101000011000010011001000110111"
+    s = time.time() 
+    res = tmp.addPol(stb(a), stb(b))
+    print(res + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
+
+    
 
 def Sqr():
-    a = "10000000000000000010000000000000000000000000000000000000000000000000000000001000000000000000000100000000000000000000000000000000001000000000000000000000000000000000000000001"
-    print(bts(sqrONB(a)))
+    a = "11111001111011000001001110100010011100000111011111110000110001101011110100100011011100110100011000010011011100111100101110011101110011110001001110101101110000100000011111010"
+    s = time.time() 
+    res = bts(sqrONB(a))
+    print(res + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
 
 def Mul():
-    a = "10000000000000000010000000000000000000000000000000000000000000000000000000001000000000000000000100000000000000000000000000000000001000000000000000000000000000000000000000001"
-    b = "10000000000000000010000000000000000000000010000000000000010000000000000000001000000000000000000100000000100000000000000000010000000100000000000000000010000000000000000000001"
-    
-    res = mulONB(stb(a), stb(b), multMatrix(a))
-    print(bts(res))
+    a = "10000000000000000010000000000000000000000000000000010000000000000000000000001000000000000000000100000000000000000000000000000000001000000000000000000000000000000000000000001"
+    b = "10000000000000000010000000001000000000000000000000000000000000000000000000001000000000000000000100000000000000000000000000000000001000000000000000000000000000000000000000001"
+    s = time.time()
+    res = bts(mulONB(stb(a), stb(b), multMatrix(a)))
+    print(res + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
 
 def Trace():
-    a = "10000000000000000010000000000000000000000000000000000000000000000000000000001000000000000000000100000000000000000000000000000000001000000000000000000000000000000000000000001"
-    print(bts(tr(stb(a))))
+    a = "11111001111011000001001110100010011100000111011111110000110001101011110100100011011100110100011000010011011100111100101110011101110011110001001110101101110000100000011111010"
+    s = time.time()
+    res = bts(tr(stb(a)))
+    print(res + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
 
 def Power():
-    a = "10000000000000000010000000000000000000000000000000000000000000000000000000001000000000000000000100000000000000000000000000000000001000000000000000000000000000000000000000001"
-    power20(a, '01010')
-    #print(bts(power(stb(a), 2)))
+    a = "10000000000000000010000000000001100000000000000000001000000000000000000000000100000000000000000010000000000000000000000000000000000100000000000000000000000000000000000000001"
+    n = '10000000000000000010000000000000000000000000000000010000000000000000000000001000000000000000000100000000000011000000000000000000001000000000000000000000000000000000000000001'
+    s = time.time()
+    res = bts(power(stb(a), stb(n)))
+    print(res + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
+       
+def Inv():
+    a ='11111001111011000001001110100010011100000111011111110000110001101011110100100011011100110100011000010011011100111100101110011101110011110001001110101101110000100000011111010'
+    
+    s = time.time()
+    res = invONB(a)
+    print( "a^(-1) = " + res + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
 
 def ArithmeticONB(): 
-    #Add()
-    #Sqr()
-    #Mul()
-    #Trace()
+    Add()
+    Sqr()
+    Mul()
+    Trace()
     Power()
+    Inv()
 
 def t1():
-    a = "10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000100000000000000000000000000000000000000011001001"
-    b = "10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000100000000000000000000000000000000000000011001001"
-    c = "10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000100000000000000000000000000000000000000011001001"
+    a = "11111001111011000001001110100010011100000111011111110000110001101011110100100011011100110100011000010011011100111100101110011101110011110001001110101101110000100000011111010"
+    b = "11111001111011001101001110100010011100000111011111110000110001101011110100100011011100110100011000010011011100111100101110011101110011110001001110101101110000100000011111010"
+    c = "11111001111011000101001110100010011100000111011111110000110001101011110100100011011100110100011000010011011100111100101110011101110011110001001110101101110000100000011111010"
     tmp = Num()
     summ = tmp.addBig(stb(a), stb(b))
     matrSumm= multMatrix(summ)
@@ -194,22 +171,23 @@ def t1():
         print("Nice try")
 
 def t2(m = 173):
-    a = "10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000100000000000000000000000000000000000000011001001"
+    a = "11111001111011000001001110100010011100000111011111110000110001101011110100100011011100110100011000010011011100111100101110011101110011110001001110101101110000100000011111010"
 
-    n = 2 ** m -1
-    print(n) 
-
-    d = bts(power(stb(a), 2**m))
-    d = div()
-    print(d)
-    if bts(d) == '1':
-        print("nice")
-    else:
-        print("nice try")
+    n =  stb(conv(str(2 ** m -1), 2, 10))
+    a = stb(a)
+    d = bts(power(a, n))
     
-def main():
+    if d == '11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111':
+        print("Nice")
+    else:
+        print("Хорошая попытка")
+    
+def Lab4Main():
+    colorama.init()
+    print(Fore.GREEN + 'Lab 4: ' + Style.RESET_ALL)
     ArithmeticONB()
-    #t1()
-    #t2()
+    t1()
+    t2()
+    
 if __name__ == "__main__":
-    main()
+    Lab4Main()

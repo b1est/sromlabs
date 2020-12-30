@@ -1,6 +1,8 @@
 import random 
 from random import randrange 
 import time
+import colorama
+from colorama import Fore, Style
 Alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 def conv(num, to = 32, froM = 16):
     if isinstance(num, str):
@@ -232,29 +234,32 @@ def ins(n, i):
       N = sdth(N, i)
    return N
 
-def sub(n1, n2):
+def subBin(a, b):
    res = []
-   n2.reverse()
-   n1.reverse()
+   b.reverse()
+   a.reverse()
    
    borrow = 0
-   for i in range(len(n1)):
-      if len(n2) > i:
-         num = n2[i]
-      temp = n1[i] - num - borrow
+   for i in range(len(a)):
+      
+      if len(b) > i:
+         num = b[i]
+      temp = a[i] - num - borrow
       if temp >= 0:
          res.append(temp)
          borrow = 0
       else:
          res.append(temp + 2)
          borrow = 1
+      num = 0
    res.reverse()
    while(len(res) != 0):
       if res[0] == 0:
          del res[0]
       else:
          break
-   
+   b.reverse()
+   a.reverse()
    return res
 
 def div(a, b):
@@ -266,9 +271,8 @@ def div(a, b):
       c = sdth(b, t-k)
       if lcmp(r,c) == -1:
          t = t - 1
-         c = sdth(b, t-k)
-      
-      r = sub(r, c)
+         c = sdth(b, t-k)  
+      r = subBin(r, c)
       q = ins(q, t-k)
    return q, r
 
@@ -315,9 +319,9 @@ def test2(A):
 def poW(A, B):
    print('---------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
    pow1_time = time.time()
-   print("A ^ B = " + conv(str(power1(conv(A), BinConv(B))), 16, 32) + "\n Время выполнения power1(): %s seconds" % (time.time() - pow1_time))
+   print("A ^ B = " + conv(str(power1(conv(A), BinConv(B))), 16, 32) + Fore.BLUE +"\n Время выполнения power1(): %s seconds" % (time.time() - pow1_time) + Style.RESET_ALL)
    pow2_time = time.time()
-   print("A ^ B = " + conv(str(power2(conv(A), BinConv(B))), 16, 32) + "\n Время выполнения power2(): %s seconds" % (time.time() - pow2_time))
+   print("A ^ B = " + conv(str(power2(conv(A), BinConv(B))), 16, 32) + Fore.BLUE + "\n Время выполнения power2(): %s seconds" % (time.time() - pow2_time)+ Style.RESET_ALL)
    print('---------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
 #LABA2
 
@@ -334,7 +338,9 @@ def gcd(a, b):
 
 def addBin(a, b):
    if len(b) > len(a):
-      a, b = b, a
+      x = a
+      a = b
+      b = x 
    res = []
    a.reverse()
    b.reverse()
@@ -367,7 +373,9 @@ def mulOneDigitBin(bigNum, a):
 
 def mulBin(a, b):
    if len(b) > len(a):
-      b, a = a, b
+      x = a
+      a = b
+      b = x 
    res = []
    b.reverse()
    for i in range(len(b)):
@@ -375,8 +383,7 @@ def mulBin(a, b):
       tmp = sdth(tmp, i)
 
       res = addBin(tmp, res)
-   a.reverse()
-   b.reverse()
+   
    return res
 
 
@@ -396,20 +403,21 @@ def lcm(a, b):
 
 
 
-def barret(x, n, m):
+def barret(x, n, mu):
    
-   if len(x) != 2 * len(n) + 1:
-      return div(x,n)[1]
-   else:
+   if len(x) == 2 * len(n):
       q = rshiftBin(x, len(n) - 1)
-      q = mulBin(q, m) 
+      q = mulBin(q, mu) 
       q = rshiftBin(q, len(n) + 1)
-      r = sub(x, mulBin(q, n))
+      r = subBin(x, mulBin(q, n))
       while comp(r, n) == 1:
-         r = sub(r, n) 
+         r = subBin(r, n) 
       if r == []:
          return [0]
       return r
+   else:
+      return div(x,n)[1]
+      
    
 
   
@@ -440,12 +448,12 @@ def mulMod(a = '47a091ac'.upper(), b ='d852d3a2'.upper(), n = '047A091AC46CBE30'
    n = BinConv(n)
    Barret = rBinConv(barret(mul, n, mu), 16)
    return Barret
-   
+ 
 
 def powMod():
-   a = '1EAEDD'
-   b = '3'.upper()
-   n = '47a091ac'.upper()
+   a = '1EAEDD395588036066915AF60F3F84502967BD8617DC'
+   b = '1253FBED85830A10694A33E1C0DF38E62C8F6B2575B1'
+   n = '247A'.upper()
    a = BinConv(a)
    b = BinConv(b)
    n = BinConv(n)
@@ -459,53 +467,53 @@ def test11():
     n = "247A"
 
 
-    add = addBin(BinConv(a), BinConv(b))
+    add = conv(LongAdd(conv(a), conv(b)), 16, 32)
     
-    m1 = mulMod(rBinConv(add, 16), c, n)
-    m2 = mulMod(c, rBinConv(add, 16) , n)
+    m1 = mulMod(add, c, n)
+    m2 = mulMod(c, add , n)
 
     num1 = mulBin(BinConv(a), BinConv(c))
     num2 = mulBin(BinConv(b), BinConv(c))
     resAdd = addMod(rBinConv(num1, 16), rBinConv(num2, 16), n)
 
     if m1 == m2 or m1 == resAdd:
-        print("Yes -3")
+        print("Yes")
     else:
         print("Nu ne polyshilos")
 
 def test22(): 
-    
-    n1 =  "1E"
-    n2 =  "12"
-    mod = "A"
-
-
-    numNa = mulMod(n1, n2, mod)
-    
-    tmp = '0'
-    
-    for i in range(len(str(int(n1, 16)))):
-        tmp = addMod(tmp, n2, mod)
-    
-    if tmp == numNa:
-        print("Yes -3")
-    else:
-        print("Nu ne polyshilos")
+   a = "1EAEDD39558803"
+   n = random.randrange(101)
+   print("n =", n)
+   mod = "A"
+   res1 = conv(a)
+   for i in range(n-1):
+      res1 = rlshift(LongAdd(conv(a), res1))
+   mu = BinConv(conv(str(2**(2*len(res1))), 16, 10))
+   mu = div(mu, BinConv(str(n)))[0]
+   res1 = rBinConv(barret(BinConv(res1, 32), BinConv(mod), mu), 16)
+   #res1 = rlshift(conv(res1, 16, 32))
+   #res1 = diV(res1, mod)[1]
+   res2 = mulMod(a, conv(str(n), 16, 10), mod)
+   if res1 == res2:
+      print("Yes")
+   else:
+      print("Nu ne polyshilos")
 
 
 def ArithmeticMod():
+  
    s = time.time()
    add = addMod()
-   print(add + "\nTime: "+ str(time.time()- s) + " seconds")
+   print(add +  "\nTime: " + str(time.time() - s) + " seconds"  )
    s = time.time()
    sub = subMod()
-   print(sub + "\nTime: "+ str(time.time()- s) + " seconds")
+   print(sub + "\nTime: " + str(time.time() - s) + " seconds"  )
    s = time.time()
    mul = mulMod()
-   print(mul+ "\nTime: "+ str(time.time()- s) + " seconds")
-   s = time.time()
-   p = rBinConv(powMod(), 16)
-   print(p + "\nTime: "+ str(time.time()- s) + " seconds" )
+   print(mul+  "\nTime: " + str(time.time() - s) + " seconds" )
+   
+  
    
 def stb(s):
     tmp = []
@@ -525,10 +533,12 @@ def bts(b):
    
 def gorner(a, b, n):
    c = [1]
-   mu = div(sdth([1], 2**len(n)), n)[0]
+   mu = BinConv(conv(str(2**(len(n))), 16, 10))
+   mu = div(mu, n)[0]
    b.reverse()
    for i in b:
       if i == 1:
          c = barret(mulBin(c.copy(), a.copy()), n, mu)
       a = barret(mulBin(a.copy(), a.copy()), n, mu)
+   
    return c

@@ -5,7 +5,6 @@ from colorama import Fore, Style
 import time
 
 def multMatrix(a, M = []): 
-    
     for i in range(0, len(a)):
         M.append([])
         for j in range(0, len(a)):
@@ -14,9 +13,7 @@ def multMatrix(a, M = []):
             else:
                 M[i].append(0)
     return M
-
 def sqrONB(a):
-    a = stb(a)
     tmp = []
     tmp.append(a[-1])
     for j in range(len(a) - 1):
@@ -33,7 +30,6 @@ def rsqrONB(a):
 
 def mulONB(a, b, m): 
     d = []
-    
     for k in range(len(a)):
         c = []
         for j in range(len(a)):
@@ -46,8 +42,7 @@ def mulONB(a, b, m):
             add = add + c[n] * b[n]
         d.append(add % 2)
         a = rsqrONB(a)
-        b = rsqrONB(b)
-        
+        b = rsqrONB(b)   
     return d
 
     
@@ -58,12 +53,11 @@ def power(a, n):
     n.reverse()
     for i in range(0, len(a)):
         tmp.append(1)
-    
     for i in range(0, len(n)):
         if n[i] == 1:
             matr = multMatrix(tmp)
             tmp = mulONB(tmp, a, matr)
-        a = stb(sqrONB(bts(a)))
+        a = stb(sqrONB(stb(bts(a))))
     return tmp
     
 
@@ -84,20 +78,20 @@ def invONB(a):
         k = 2*k
         print('k = ', k)
         if n[i] == 1:
-            b = stb(sqrONB(bts(b)))
+            b = stb(sqrONB(stb(bts(b))))
             print('b^2 = ' + bts(b))
             b = mulONB(b, a, multMatrix(b))
             print('b = b^2 * a = ' + bts(b))
             k = k + 1
             print('k = ', k)
-    return bts(stb(sqrONB(bts(b))))
+    return bts(stb(sqrONB(stb(bts(b)))))
 
 
 def tr(a = [], trc= [0]):
     tmp = Num()
     for i in range(len(a)):
         trc = tmp.addBig(trc, a)
-        a = stb(sqrONB(a))
+        a = stb(sqrONB(stb(a)))
     return trc
 
 def Add():
@@ -113,7 +107,7 @@ def Add():
 def Sqr():
     a = "11111001111011000001001110100010011100000111011111110000110001101011110100100011011100110100011000010011011100111100101110011101110011110001001110101101110000100000011111010"
     s = time.time() 
-    res = bts(sqrONB(a))
+    res = bts(sqrONB(stb(a)))
     print(res + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
 
 def Mul():

@@ -14,18 +14,14 @@ def testGcdAndLcm():
     print(lcm(a, b), Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
 
 def Lab2Main():
-    
     colorama.init()
     print(Fore.GREEN + 'Lab 2: ' + Style.RESET_ALL)
     testGcdAndLcm()
-    
     ArithmeticMod()
     test11()
     test22()
    
-    s = time.time()
-    p = rBinConv(powMod(), 16)
-    print(p +  "\nTime: " + str(time.time() - s) + " seconds" )
+    
     
 if __name__ == "__main__":
     Lab2Main()

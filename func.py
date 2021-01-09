@@ -421,7 +421,8 @@ def barret(x, n, mu):
    
 
   
-def addMod(a = 'd852d3a2099fa0ef4'.upper(), b ='047A091AC46AFE31'.upper(), n = '047A091AC46CBE30'.upper()):
+def addMod(a = 'D852D3A2099FA0EF4', b ='047A091AC46AFE31', n = '047A091AC46CBE30'):
+   
    summ = conv(LongAdd(conv(a), conv(b)), 10, 32)
    mu = BinConv(conv(str(2**(2*len(summ))), 16, 10))
    summ = BinConv(summ, 10)
@@ -431,7 +432,7 @@ def addMod(a = 'd852d3a2099fa0ef4'.upper(), b ='047A091AC46AFE31'.upper(), n = '
    return Barret
 
    
-def subMod(a = 'd852d3a2099fa0ef4'.upper(), b ='047A091AC46AFE31'.upper(), n = '047A091AC46CBE30'.upper()):
+def subMod(a = 'D852D3A2099FA0EF4', b ='047A091AC46AFE31', n = '047A091AC46CBE30'):
    sub = conv(LongSub(conv(a), conv(b)), 10, 32)
    mu = BinConv(conv(str(2**(2*len(sub))), 16, 10))
    sub = BinConv(sub, 10)
@@ -440,7 +441,7 @@ def subMod(a = 'd852d3a2099fa0ef4'.upper(), b ='047A091AC46AFE31'.upper(), n = '
    Barret = rBinConv(barret(sub, n, mu), 16)
    return Barret
 
-def mulMod(a = '47a091ac'.upper(), b ='d852d3a2'.upper(), n = '047A091AC46CBE30'.upper()):
+def mulMod(a = '47A091AC', b ='D852D3A2', n = '047A091AC46CBE30'):
    mul = conv(LongMul(conv(a), conv(b)), 10, 32)
    mu = BinConv(conv(str(2**(2*len(mul))), 16, 10))
    mul = BinConv(mul, 10)
@@ -453,7 +454,7 @@ def mulMod(a = '47a091ac'.upper(), b ='d852d3a2'.upper(), n = '047A091AC46CBE30'
 def powMod():
    a = '1EAEDD395588036066915AF60F3F84502967BD8617DC'
    b = '1253FBED85830A10694A33E1C0DF38E62C8F6B2575B1'
-   n = '247A'.upper()
+   n = '247A'
    a = BinConv(a)
    b = BinConv(b)
    n = BinConv(n)
@@ -497,6 +498,7 @@ def test22():
    res2 = mulMod(a, conv(str(n), 16, 10), mod)
    if res1 == res2:
       print("Yes")
+      print(res1)
    else:
       print("Nu ne polyshilos")
 
@@ -505,13 +507,16 @@ def ArithmeticMod():
   
    s = time.time()
    add = addMod()
-   print(add +  "\nTime: " + str(time.time() - s) + " seconds"  )
+   print(add,  Fore.BLUE +  "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
    s = time.time()
    sub = subMod()
-   print(sub + "\nTime: " + str(time.time() - s) + " seconds"  )
+   print(sub, Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
    s = time.time()
    mul = mulMod()
-   print(mul+  "\nTime: " + str(time.time() - s) + " seconds" )
+   print(mul, Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds"+ Style.RESET_ALL )
+   s = time.time()
+   p = rBinConv(powMod(), 16)
+   print(p, Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL)
    
   
    

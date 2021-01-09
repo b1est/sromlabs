@@ -13,7 +13,9 @@ def multMatrix(a, M = []):
             else:
                 M[i].append(0)
     return M
+
 def sqrONB(a):
+    a = stb(a)
     tmp = []
     tmp.append(a[-1])
     for j in range(len(a) - 1):
@@ -30,6 +32,7 @@ def rsqrONB(a):
 
 def mulONB(a, b, m): 
     d = []
+    
     for k in range(len(a)):
         c = []
         for j in range(len(a)):
@@ -42,7 +45,8 @@ def mulONB(a, b, m):
             add = add + c[n] * b[n]
         d.append(add % 2)
         a = rsqrONB(a)
-        b = rsqrONB(b)   
+        b = rsqrONB(b)
+        
     return d
 
     
@@ -53,11 +57,12 @@ def power(a, n):
     n.reverse()
     for i in range(0, len(a)):
         tmp.append(1)
+    
     for i in range(0, len(n)):
         if n[i] == 1:
             matr = multMatrix(tmp)
             tmp = mulONB(tmp, a, matr)
-        a = stb(sqrONB(stb(bts(a))))
+        a = stb(sqrONB(bts(a)))
     return tmp
     
 
@@ -78,72 +83,60 @@ def invONB(a):
         k = 2*k
         print('k = ', k)
         if n[i] == 1:
-            b = stb(sqrONB(stb(bts(b))))
+            b = stb(sqrONB(bts(b)))
             print('b^2 = ' + bts(b))
             b = mulONB(b, a, multMatrix(b))
             print('b = b^2 * a = ' + bts(b))
             k = k + 1
             print('k = ', k)
-    return bts(stb(sqrONB(stb(bts(b)))))
+    return bts(stb(sqrONB(bts(b))))
 
 
 def tr(a = [], trc= [0]):
     tmp = Num()
     for i in range(len(a)):
         trc = tmp.addBig(trc, a)
-        a = stb(sqrONB(stb(a)))
+        a = stb(sqrONB(a))
     return trc
 
-def Add():
+def Add(a, b):
     tmp = Num()
-    a = "11111001111011000001001110100010011100000111011111110000110001101011110100100011011100110100011000010011011100111100101110011101110011110001001110101101110000100000011111010"
-    b = "10011001100100010001111111110001001001000010001010100000101001111100010000110110010101000010011010110100100000110100001110011110111010101111110101000011000010011001000110111"
     s = time.time() 
     res = tmp.addPol(stb(a), stb(b))
     print(res + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
 
-    
-
-def Sqr():
-    a = "11111001111011000001001110100010011100000111011111110000110001101011110100100011011100110100011000010011011100111100101110011101110011110001001110101101110000100000011111010"
+def Sqr(a):
     s = time.time() 
-    res = bts(sqrONB(stb(a)))
+    res = bts(sqrONB(a))
     print(res + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
 
-def Mul():
-    a = "10000000000000000010000000000000000000000000000000010000000000000000000000001000000000000000000100000000000000000000000000000000001000000000000000000000000000000000000000001"
-    b = "10000000000000000010000000001000000000000000000000000000000000000000000000001000000000000000000100000000000000000000000000000000001000000000000000000000000000000000000000001"
+def Mul(a, b):
     s = time.time()
     res = bts(mulONB(stb(a), stb(b), multMatrix(a)))
     print(res + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
 
-def Trace():
-    a = "11111001111011000001001110100010011100000111011111110000110001101011110100100011011100110100011000010011011100111100101110011101110011110001001110101101110000100000011111010"
+def Trace(a):
     s = time.time()
     res = bts(tr(stb(a)))
     print(res + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
 
-def Power():
-    a = "10000000000000000010000000000001100000000000000000001000000000000000000000000100000000000000000010000000000000000000000000000000000100000000000000000000000000000000000000001"
-    n = '10000000000000000010000000000000000000000000000000010000000000000000000000001000000000000000000100000000000011000000000000000000001000000000000000000000000000000000000000001'
+def Power(a, n):
     s = time.time()
     res = bts(power(stb(a), stb(n)))
     print(res + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
        
-def Inv():
-    a ='11111001111011000001001110100010011100000111011111110000110001101011110100100011011100110100011000010011011100111100101110011101110011110001001110101101110000100000011111010'
-    
+def Inv(a):
     s = time.time()
     res = invONB(a)
     print( "a^(-1) = " + res + Fore.BLUE + "\nTime: " + str(time.time() - s) + " seconds" + Style.RESET_ALL )
 
-def ArithmeticONB(): 
-    Add()
-    Sqr()
-    Mul()
-    Trace()
-    Power()
-    Inv()
+def ArithmeticONB(a, b, n): 
+    Add(a, b)
+    Mul(a, b)
+    Trace(a)
+    Sqr(a)
+    Inv(a)
+    Power(a, n)
 
 def t1():
     a = "11111001111011000001001110100010011100000111011111110000110001101011110100100011011100110100011000010011011100111100101110011101110011110001001110101101110000100000011111010"
@@ -179,7 +172,10 @@ def t2(m = 173):
 def Lab4Main():
     colorama.init()
     print(Fore.GREEN + 'Lab 4: ' + Style.RESET_ALL)
-    ArithmeticONB()
+    a = '11100110010110001000101111110110100111010110101101111100111100101001100111000111010100000000111100000000111001000111000011101011000010000100111011101010101001110111011001101'
+    b = '00111110010101100101000111010000100011001110101101000010101010100101101110111110011001011110110111101001110001001011010111011001101011110101000110111110101101111110110010011'
+    n = '11100000001000001111000100111011101001110001000111110101111100100111011101001101101100000001110101011110010000111010110001101001000010110010100000100100000010001011101000110'
+    ArithmeticONB(a, b, n)
     t1()
     t2()
     

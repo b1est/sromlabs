@@ -94,8 +94,9 @@ def invONB(a):
 
 def tr(a = []):
     tmp = Num()
-    for i in a:
-        trc = tmp.addBig([i], [i+1])
+    trc = list(tmp.addBig([a[0]], [a[1]]))
+    for i in range(2, len(a)):
+        trc = list(tmp.addBig(trc, [a[i]]))
     return trc
 
 def Add(a, b):
